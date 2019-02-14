@@ -17,25 +17,148 @@ Currently under review.
 
 ### Differential expression analyses
 
+*Main analyses using orthologs between sexual and asexual sister species*
+
+* Get Sex-biased genes:
+    * Sex_bias_edgeR.R
+* Get Sex-limited genes:
+    * Sex_bias_edgeR_Sex_limited_expression.R
+
+* bring expression data together
+
+mkdir Output/DE_joined	
+for sp in Tbi Tce Tcm Tpa Tps; do
+	for tiss in WB RT LG; do
+	
+	python3 sex_bias_asex_edgeR_tidier.py \
+		-i Output/DE -s \
+		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined/"$sp"_"$tiss"_RBBH_disp_allsepar" \
+		 -x $sp"_"$tiss"_F_FPKM_RBBH_1.csv"
+	done
+done
+
+* plot
+    * Sex_bias_plotsetc.R
+
+*Analyses using orthologs between all sexual and asexual species*
+
+* Get Sex-biased genes
+    * Sex_bias_edgeR_10sp_orths.R
+
+mkdir Output/DE_joined_10sp
+python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
+    TTT_lrt_Tbi_sex_bias_WB.csv,TTT_lrt_Tce_sex_bias_WB.csv,TTT_lrt_Tcm_sex_bias_WB.csv,TTT_lrt_Tpa_sex_bias_WB.csv,TTT_lrt_Tps_sex_bias_WB.csv \
+	-a sex_asex -o Output/DE_joined_10sp/ALL_WB_10sp_disp_allsepar_wCPM -c cpm_df_WB_10sp_ALL.csv
+
+python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
+    TTT_lrt_Tbi_sex_bias_RT.csv,TTT_lrt_Tce_sex_bias_RT.csv,TTT_lrt_Tcm_sex_bias_RT.csv,TTT_lrt_Tpa_sex_bias_RT.csv,TTT_lrt_Tps_sex_bias_RT.csv \
+	-a sex_asex -o Output/DE_joined_10sp/ALL_RT_10sp_disp_allsepar_wCPM -c cpm_df_RT_10sp_ALL.csv
+
+python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
+    TTT_lrt_Tbi_sex_bias_LG.csv,TTT_lrt_Tce_sex_bias_LG.csv,TTT_lrt_Tcm_sex_bias_LG.csv,TTT_lrt_Tpa_sex_bias_LG.csv,TTT_lrt_Tps_sex_bias_LG.csv \
+	-a sex_asex -o Output/DE_joined_10sp/ALL_LG_10sp_disp_allsepar_wCPM -c cpm_df_LG_10sp_ALL.csv
+
+* Sex_bias_plotsetc_10sp_orths.R	
+* N_SB_genes_10sp.R
+
+*Analyses using virgin females*
+
+* get SB genes, cluster virgin and mated samples
+    * sex_bias_edgeR_withVIfemales.R
+
+
+* bring expression data together
+
+mkdir Output/DE_joined_Virgin	
+for sp in Tbi Tce Tcm Tpa Tps; do
+	for tiss in WB; do
+	
+	python3 sex_bias_asex_edgeR_tidier.py \
+		-i Output/DE_Virgin -s \
+		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_Virgin/"$sp"_"$tiss"_RBBH_disp_allsepar"
+	done
+done
+
+* Sex_bias_plotsetc_withVIfemales.R
+
+
+*Analyses without filtering genes with low expression in asexual females*
+
+* Get Sex-biased genes:
+    * Sex_bias_edgeR_nocpmfilteronasex.R
+
+* bring expression data together
+
+mkdir Output/DE_joined_nocpmfilteronasex
+for sp in Tbi Tce Tcm Tpa Tps; do
+	for tiss in WB RT LG; do
+	
+	python3 sex_bias_asex_edgeR_tidier.py \
+		-i Output/DE_nocpmfiltonasex -s \
+		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_nocpmfilteronasex/"$sp"_"$tiss"_RBBH_disp_allsepar" 
+	done
+done
+
+* Sex_bias_plotsetc_nocpmfilteronasex.R
+
+*Analyses using full transcriptome references*
+
+* Using the sexual references
+
+* Sex_bias_edgeR_sexual_ref.R
+
+mkdir Output/DE_joined_sexual_ref	
+for sp in Tbi Tce Tcm Tpa Tps; do
+	for tiss in WB RT LG; do
+	
+	python3 sex_bias_asex_edgeR_tidier.py \
+		-i Output/DE_sexual_ref -s \
+		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_sexual_ref/"$sp"_"$tiss"_longest_iso_disp_allsepar" \
+		 -x $sp"_"$tiss"_N_FPKM_longest_iso_1.csv"
+	done
+done
+
+
+* Sex_bias_plotsetc_sexual_ref.R
+
+
+* Using the asexual references
+
+* Sex_bias_edgeR_asexual_ref.R
+
+mkdir Output/DE_joined_asexual_ref	
+for sp in Tbi Tce Tcm Tpa Tps; do
+	for tiss in WB RT LG; do
+	
+	python3 sex_bias_asex_edgeR_tidier.py \
+		-i Output/DE_asexual_ref -s \
+		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_asexual_ref/"$sp"_"$tiss"_longest_iso_disp_allsepar" \
+		 -x $sp"_"$tiss"_N_FPKM_longest_iso_1.csv"
+	done
+done
+
+* Sex_bias_plotsetc_asexual_ref.R
+
 
 ### GO term analyses
 
+* TopGO.R
+* TopGO_10sp.R
 
-### pN/pS and dN/dS analyses
+### dN/dS analyses
 
+* dnds_SBGE.R
 
 ### Additional scripts
+
 
 
 # Infomation on running scripts
 
 ## General 
 
-* All scripts should be run from the directory they are in. Output directories will be created to store output as the code is run. 
+* All scripts should be run from the directory they are in. Output directories will be created to store Output as the code is run. 
 * All python scripts were made using python 3.5. All contain help information which can be displayed by specifying no command line arguments.
-
-## To identify sex-biased genes
-
 
 
 # Abbreviations
