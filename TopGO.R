@@ -18,6 +18,28 @@ library("SuperExactTest")
 
 print (sessionInfo())
 
+# R version 3.4.1 (2017-06-30)
+# Platform: x86_64-apple-darwin15.6.0 (64-bit)
+# Running under: macOS High Sierra 10.13.4
+
+# Matrix products: default
+# BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+# LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+
+# locale:
+# [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+# attached base packages:
+ # [1] grid      stats4    parallel  stats     graphics  grDevices utils     datasets  methods   base     
+
+# other attached packages:
+ # [1] SuperExactTest_0.99.4 ggplot2_2.2.1         gridExtra_2.3         VennDiagram_1.6.17    futile.logger_1.4.3   ALL_1.18.0            topGO_2.28.0          SparseM_1.77         
+ # [9] GO.db_3.4.1           AnnotationDbi_1.38.2  IRanges_2.10.5        S4Vectors_0.14.7      Biobase_2.36.2        graph_1.54.0          BiocGenerics_0.22.1  
+
+# loaded via a namespace (and not attached):
+ # [1] Rcpp_0.12.13         munsell_0.4.3        bit_1.1-12           colorspace_1.3-2     lattice_0.20-35      rlang_0.1.6          plyr_1.8.4           blob_1.1.0          
+ # [9] tools_3.4.1          gtable_0.2.0         DBI_0.7              lambda.r_1.2         matrixStats_0.52.2   lazyeval_0.2.1       bit64_0.9-7          digest_0.6.12       
+# [17] tibble_1.3.4         futile.options_1.0.0 memoise_1.1.0        RSQLite_2.0          compiler_3.4.1       scales_0.5.0         pkgconfig_2.0.1     
 
 Intersect <- function (x) {  
   # Multiple set version of intersect
