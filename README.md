@@ -11,21 +11,22 @@ Currently under review.
 
 ## DATA
 
-* Contains read counts, GO terms, dN/dS and pN/pS estimates for input to the scripts below. 
+* Contains read counts, GO terms, and dN/dS estimates for input to the scripts below. 
 
 ## SCRIPTS
 
 ### Differential expression analyses
 
-*Main analyses using orthologs between sexual and asexual sister species*
+**_Main analyses using orthologs between sexual and asexual sister species_**
 
 * Get Sex-biased genes:
     * Sex_bias_edgeR.R
 * Get Sex-limited genes:
     * Sex_bias_edgeR_Sex_limited_expression.R
 
-* bring expression data together
+* bring expression data together:
 
+```
 mkdir Output/DE_joined	
 for sp in Tbi Tce Tcm Tpa Tps; do
 	for tiss in WB RT LG; do
@@ -36,15 +37,18 @@ for sp in Tbi Tce Tcm Tpa Tps; do
 		 -x $sp"_"$tiss"_F_FPKM_RBBH_1.csv"
 	done
 done
-
+```
 * plot
     * Sex_bias_plotsetc.R
 
-*Analyses using orthologs between all sexual and asexual species*
+**_Analyses using orthologs between all sexual and asexual species_**
 
 * Get Sex-biased genes
     * Sex_bias_edgeR_10sp_orths.R
 
+* bring expression data together
+
+```
 mkdir Output/DE_joined_10sp
 python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
     TTT_lrt_Tbi_sex_bias_WB.csv,TTT_lrt_Tce_sex_bias_WB.csv,TTT_lrt_Tcm_sex_bias_WB.csv,TTT_lrt_Tpa_sex_bias_WB.csv,TTT_lrt_Tps_sex_bias_WB.csv \
@@ -57,9 +61,11 @@ python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
 python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
     TTT_lrt_Tbi_sex_bias_LG.csv,TTT_lrt_Tce_sex_bias_LG.csv,TTT_lrt_Tcm_sex_bias_LG.csv,TTT_lrt_Tpa_sex_bias_LG.csv,TTT_lrt_Tps_sex_bias_LG.csv \
 	-a sex_asex -o Output/DE_joined_10sp/ALL_LG_10sp_disp_allsepar_wCPM -c cpm_df_LG_10sp_ALL.csv
+```
 
-* Sex_bias_plotsetc_10sp_orths.R	
-* N_SB_genes_10sp.R
+* plot:
+    * Sex_bias_plotsetc_10sp_orths.R	
+    * N_SB_genes_10sp.R
 
 *Analyses using virgin females*
 
@@ -67,8 +73,9 @@ python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
     * sex_bias_edgeR_withVIfemales.R
 
 
-* bring expression data together
+* bring expression data together:
 
+```
 mkdir Output/DE_joined_Virgin	
 for sp in Tbi Tce Tcm Tpa Tps; do
 	for tiss in WB; do
@@ -78,17 +85,20 @@ for sp in Tbi Tce Tcm Tpa Tps; do
 		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_Virgin/"$sp"_"$tiss"_RBBH_disp_allsepar"
 	done
 done
+```
 
-* Sex_bias_plotsetc_withVIfemales.R
+* plot
+    * Sex_bias_plotsetc_withVIfemales.R
 
 
-*Analyses without filtering genes with low expression in asexual females*
+**_Analyses without filtering genes with low expression in asexual females_**
 
 * Get Sex-biased genes:
     * Sex_bias_edgeR_nocpmfilteronasex.R
 
-* bring expression data together
+* bring expression data together:
 
+```
 mkdir Output/DE_joined_nocpmfilteronasex
 for sp in Tbi Tce Tcm Tpa Tps; do
 	for tiss in WB RT LG; do
@@ -98,15 +108,19 @@ for sp in Tbi Tce Tcm Tpa Tps; do
 		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_nocpmfilteronasex/"$sp"_"$tiss"_RBBH_disp_allsepar" 
 	done
 done
+```
 
-* Sex_bias_plotsetc_nocpmfilteronasex.R
+* plot
+    * Sex_bias_plotsetc_nocpmfilteronasex.R
 
-*Analyses using full transcriptome references*
+**_Analyses using full transcriptome references_**
 
 * Using the sexual references
+    * Sex_bias_edgeR_sexual_ref.R
 
-* Sex_bias_edgeR_sexual_ref.R
+* bring expression data together:
 
+```
 mkdir Output/DE_joined_sexual_ref	
 for sp in Tbi Tce Tcm Tpa Tps; do
 	for tiss in WB RT LG; do
@@ -117,15 +131,18 @@ for sp in Tbi Tce Tcm Tpa Tps; do
 		 -x $sp"_"$tiss"_N_FPKM_longest_iso_1.csv"
 	done
 done
+```
 
-
-* Sex_bias_plotsetc_sexual_ref.R
+* plot
+    * Sex_bias_plotsetc_sexual_ref.R
 
 
 * Using the asexual references
+    * Sex_bias_edgeR_asexual_ref.R
 
-* Sex_bias_edgeR_asexual_ref.R
+* bring expression data together:
 
+```
 mkdir Output/DE_joined_asexual_ref	
 for sp in Tbi Tce Tcm Tpa Tps; do
 	for tiss in WB RT LG; do
@@ -136,14 +153,16 @@ for sp in Tbi Tce Tcm Tpa Tps; do
 		 -x $sp"_"$tiss"_N_FPKM_longest_iso_1.csv"
 	done
 done
+```
 
-* Sex_bias_plotsetc_asexual_ref.R
+* plot
+    * Sex_bias_plotsetc_asexual_ref.R
 
 
 ### GO term analyses
 
-* TopGO.R
-* TopGO_10sp.R
+* TopGO.R | for the main GO term analyses
+* TopGO_10sp.R | for the GO term analyses using only the 10 species orthologs
 
 ### dN/dS analyses
 
@@ -151,6 +170,9 @@ done
 
 ### Additional scripts
 
+* **B2G_to_topGO.py** | Script for converting Blast2GO output into a format usable by topGO
+* **super_exact_test_multitest_corrector.py** | Script to correct the p-values of SuperExactTest for multiple tests
+* **super_exact_test_table_parser.py** | Script to tidy up the output of super_exact_test_multitest_corrector.py
 
 
 # Infomation on running scripts
