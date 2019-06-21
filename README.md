@@ -171,6 +171,8 @@ done
 ### Additional scripts
 
 * **B2G_to_topGO.py** | Script for converting Blast2GO output into a format usable by topGO
+* **Get_GO_term_parent_and_child_overlap_adjuster.py** | Script for dealing with topographically close GO terms 
+* **Get_GO_term_parent_and_child_overlap_adjuster_test_data_expl.R** | Script explaining the logic of Get_GO_term_parent_and_child_overlap_adjuster.py
 * **super_exact_test_multitest_corrector.py** | Script to correct the p-values of SuperExactTest for multiple tests
 * **super_exact_test_table_parser.py** | Script to tidy up the output of super_exact_test_multitest_corrector.py
 
