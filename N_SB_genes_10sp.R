@@ -13,7 +13,8 @@ library(pvclust)
 library("VennDiagram")
 library("SuperExactTest")
 library(raster)
-
+library(fitdistrplus)
+library(lme4)
 
 print (sessionInfo())
 
@@ -32,14 +33,13 @@ print (sessionInfo())
 # [1] grid      stats     graphics  grDevices utils     datasets  methods   base     
 
 # other attached packages:
- # [1] SuperExactTest_0.99.4 raster_2.5-8          sp_1.2-5              pvclust_2.0-0         vegan_2.4-4           permute_0.9-4         RColorBrewer_1.1-2    pheatmap_1.0.8        gtable_0.2.0          stringr_1.2.0         cowplot_0.8.0        
-# [12] lattice_0.20-35       ggplot2_2.2.1         gridExtra_2.3         VennDiagram_1.6.17    futile.logger_1.4.3   edgeR_3.18.1          limma_3.32.10        
+ # [1] lme4_1.1-19          Matrix_1.2-15        fitdistrplus_1.0-11  npsurv_0.4-0         lsei_1.2-0           survival_2.43-1      MASS_7.3-51.1        raster_2.8-4         sp_1.3-1             SuperExactTest_1.0.4 VennDiagram_1.6.20  
+# [12] futile.logger_1.4.3  pvclust_2.0-0        RColorBrewer_1.1-2   gtable_0.2.0         lattice_0.20-38      gridExtra_2.3        cowplot_0.9.3        pheatmap_1.0.10      ggplot2_3.1.0       
 
 # loaded via a namespace (and not attached):
- # [1] Rcpp_0.12.13         cluster_2.0.6        magrittr_1.5         MASS_7.3-47          munsell_0.4.3        colorspace_1.3-2     rlang_0.1.6          plyr_1.8.4           tools_3.4.1          parallel_3.4.1       nlme_3.1-131        
-# [12] mgcv_1.8-22          lambda.r_1.2         lazyeval_0.2.1       tibble_1.3.4         Matrix_1.2-11        futile.options_1.0.0 stringi_1.1.5        compiler_3.4.1       scales_0.5.0         locfit_1.5-9.1      
-# > 
-
+ # [1] Rcpp_1.0.0           nloptr_1.2.1         pillar_1.3.0         compiler_3.5.1       formatR_1.5          plyr_1.8.4           bindr_0.1.1          tools_3.5.1          futile.options_1.0.1 nlme_3.1-137         tibble_1.4.2        
+# [12] pkgconfig_2.0.2      rlang_0.3.0.1        bindrcpp_0.2.2       withr_2.1.2          dplyr_0.7.8          tidyselect_0.2.5     glue_1.3.0           R6_2.3.0             minqa_1.2.4          purrr_0.2.5          lambda.r_1.2.3      
+# [23] magrittr_1.5         splines_3.5.1        scales_1.0.0         codetools_0.2-15     assertthat_0.2.0     colorspace_1.3-2     labeling_0.3         lazyeval_0.2.1       munsell_0.5.0        crayon_1.3.4        
 
 ###### fun
 
@@ -81,7 +81,8 @@ make_long_table_wNsp = function(dat,tiss){
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_MB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB_wFC',sep='')))),
-		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	
+		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep='')))),
+		as.character(eval(parse(text=paste(dat,'$','genename',sep=''))))		
 		))
 		
 		 
@@ -98,7 +99,8 @@ make_long_table_wNsp = function(dat,tiss){
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_MB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB_wFC',sep='')))),
-		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	
+		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep='')))),
+		as.character(eval(parse(text=paste(dat,'$','genename',sep=''))))		
 		))
 		
 	df_t2$sp     = rep(sp_u, length(df_t2[,1]))
@@ -113,7 +115,8 @@ make_long_table_wNsp = function(dat,tiss){
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_MB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB_wFC',sep='')))),
-		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	
+		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep='')))),
+		as.character(eval(parse(text=paste(dat,'$','genename',sep=''))))		
 		))
 		
 		
@@ -129,7 +132,8 @@ make_long_table_wNsp = function(dat,tiss){
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_MB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB_wFC',sep='')))),
-		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	
+		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	,
+		as.character(eval(parse(text=paste(dat,'$','genename',sep=''))))	
 		))
 		
 		
@@ -145,7 +149,8 @@ make_long_table_wNsp = function(dat,tiss){
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_MB',sep='')))),
 		as.character(eval(parse(text=paste(dat,'$','N_sp_FB_wFC',sep='')))),
-		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	
+		as.character(eval(parse(text=paste(dat,'$','N_sp_MB_wFC',sep=''))))	,
+		as.character(eval(parse(text=paste(dat,'$','genename',sep=''))))	
 		))
 		
 		
@@ -156,7 +161,7 @@ make_long_table_wNsp = function(dat,tiss){
 
 
 	df_t = rbind(df_t1,df_t2,df_t3,df_t4,df_t5)
-	colnames(df_t) <- c("log2FC_SA", "sexbias", "sexbias2", "N_sp_FB", "N_sp_MB", "N_sp_FB_wFC", "N_sp_MB_wFC", "sp", "SBgroup", "SBgroup2")
+	colnames(df_t) <- c("log2FC_SA", "sexbias", "sexbias2", "N_sp_FB", "N_sp_MB", "N_sp_FB_wFC", "N_sp_MB_wFC",  "genename", "sp", "SBgroup", "SBgroup2")
 	
 	df_t$log2FC_SA <- as.numeric(as.character(df_t$log2FC_SA))
 	df_t$SBgroup <- as.factor(df_t$SBgroup)
@@ -195,7 +200,7 @@ dat_ALL_WB_10sp_SB_asex_long2 <- make_long_table_wNsp("dat_ALL_WB_10sp_SB_asex2"
 dat_ALL_RT_10sp_SB_asex_long2 <- make_long_table_wNsp("dat_ALL_RT_10sp_SB_asex2", "RT")
 dat_ALL_LG_10sp_SB_asex_long2 <- make_long_table_wNsp("dat_ALL_LG_10sp_SB_asex2", "LG")
 
-head(dat_ALL_RT_10sp_SB_asex_long2, n = 10)
+head(dat_ALL_WB_10sp_SB_asex_long2, n = 10)
 
 ######### remove NAs
 
@@ -212,14 +217,13 @@ dat_ALL_RT_10sp_SB_asex_long2_c$tiss  <- rep("RT", length(dat_ALL_RT_10sp_SB_ase
 dat_ALL_LG_10sp_SB_asex_long2_c$tiss  <- rep("LG", length(dat_ALL_LG_10sp_SB_asex_long2_c[,1]))
 
 
-
 ### join and add some spacing
 
 dat_ALL_WBRTLG_10sp_SB_asex_long2_c <- rbind(dat_ALL_WB_10sp_SB_asex_long2_c, dat_ALL_RT_10sp_SB_asex_long2_c, dat_ALL_LG_10sp_SB_asex_long2_c)
 head(dat_ALL_WBRTLG_10sp_SB_asex_long2_c)
-
 dat_ALL_WBRTLG_10sp_SB_asex_long2_c$sexbias2_Nsp_tiss <- paste(dat_ALL_WBRTLG_10sp_SB_asex_long2_c$sexbias2_Nsp, dat_ALL_WBRTLG_10sp_SB_asex_long2_c$tiss, sep = "_")
 head(dat_ALL_WBRTLG_10sp_SB_asex_long2_c)
+
 dat_ALL_WBRTLG_10sp_SB_asex_long2_c <- rbind(dat_ALL_WBRTLG_10sp_SB_asex_long2_c, c(NA,"Unbiased","Unbiased",NA,NA,NA,NA,NA,NA,NA, NA,NA,NA,NA,NA,NA,  "skip_WB"))
 dat_ALL_WBRTLG_10sp_SB_asex_long2_c <- rbind(dat_ALL_WBRTLG_10sp_SB_asex_long2_c, c(NA,"Unbiased","Unbiased",NA,NA,NA,NA,NA,NA,NA, NA,NA,NA,NA,NA, NA, "skip_RT"))
 dat_ALL_WBRTLG_10sp_SB_asex_long2_c <- rbind(dat_ALL_WBRTLG_10sp_SB_asex_long2_c, c(NA,"Unbiased","Unbiased",NA,NA,NA,NA,NA,NA,NA, NA,NA,NA,NA,NA, NA, "male_biased_5_WB"))
@@ -296,24 +300,340 @@ getwd()
 
 
 
+##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
+#### test the relationship between the number of species a gene is sex-biased in and the shift in expression in asexual females 
 
-########################################################################################################################################################################
+##### subset the data
+
+dat_ALL_WB_10sp_FB_asex_long2_c <- subset(dat_ALL_WB_10sp_SB_asex_long2_c, dat_ALL_WB_10sp_SB_asex_long2_c$sexbias2 == "female_biased")
+dat_ALL_WB_10sp_MB_asex_long2_c <- subset(dat_ALL_WB_10sp_SB_asex_long2_c, dat_ALL_WB_10sp_SB_asex_long2_c$sexbias2 == "male_biased")
+dat_ALL_RT_10sp_FB_asex_long2_c <- subset(dat_ALL_RT_10sp_SB_asex_long2_c, dat_ALL_RT_10sp_SB_asex_long2_c$sexbias2 == "female_biased")
+dat_ALL_RT_10sp_MB_asex_long2_c <- subset(dat_ALL_RT_10sp_SB_asex_long2_c, dat_ALL_RT_10sp_SB_asex_long2_c$sexbias2 == "male_biased")
+dat_ALL_LG_10sp_FB_asex_long2_c <- subset(dat_ALL_LG_10sp_SB_asex_long2_c, dat_ALL_LG_10sp_SB_asex_long2_c$sexbias2 == "female_biased")
+dat_ALL_LG_10sp_MB_asex_long2_c <- subset(dat_ALL_LG_10sp_SB_asex_long2_c, dat_ALL_LG_10sp_SB_asex_long2_c$sexbias2 == "male_biased")
+
+dat_ALL_WB_10sp_FB_asex_long2_c$N_sp_FB_wFC <- as.numeric(as.character(dat_ALL_WB_10sp_FB_asex_long2_c$N_sp_FB_wFC))
+dat_ALL_RT_10sp_FB_asex_long2_c$N_sp_FB_wFC <- as.numeric(as.character(dat_ALL_RT_10sp_FB_asex_long2_c$N_sp_FB_wFC))
+dat_ALL_LG_10sp_FB_asex_long2_c$N_sp_FB_wFC <- as.numeric(as.character(dat_ALL_LG_10sp_FB_asex_long2_c$N_sp_FB_wFC))
+dat_ALL_WB_10sp_MB_asex_long2_c$N_sp_MB_wFC <- as.numeric(as.character(dat_ALL_WB_10sp_MB_asex_long2_c$N_sp_MB_wFC))
+dat_ALL_RT_10sp_MB_asex_long2_c$N_sp_MB_wFC <- as.numeric(as.character(dat_ALL_RT_10sp_MB_asex_long2_c$N_sp_MB_wFC))
+dat_ALL_LG_10sp_MB_asex_long2_c$N_sp_MB_wFC <- as.numeric(as.character(dat_ALL_LG_10sp_MB_asex_long2_c$N_sp_MB_wFC))
+
+
+##### GLMM
+
+fit_WB_FB     <- fitdist(as.numeric(na.omit(dat_ALL_WB_10sp_FB_asex_long2_c$log2FC_SA + 10)), "norm")
+fit_WB_FB_LN  <- fitdist(as.numeric(na.omit(dat_ALL_WB_10sp_FB_asex_long2_c$log2FC_SA + 10)), "lnorm")
+fit_WB_FB_G   <- fitdist(as.numeric(na.omit(dat_ALL_WB_10sp_FB_asex_long2_c$log2FC_SA + 10)), "gamma")
+
+fit_RT_FB     <- fitdist(as.numeric(na.omit(dat_ALL_RT_10sp_FB_asex_long2_c$log2FC_SA + 10)), "norm")
+fit_RT_FB_LN  <- fitdist(as.numeric(na.omit(dat_ALL_RT_10sp_FB_asex_long2_c$log2FC_SA + 10)), "lnorm")
+fit_RT_FB_G   <- fitdist(as.numeric(na.omit(dat_ALL_RT_10sp_FB_asex_long2_c$log2FC_SA + 10)), "gamma")
+
+fit_LG_FB     <- fitdist(as.numeric(na.omit(dat_ALL_LG_10sp_FB_asex_long2_c$log2FC_SA + 10)), "norm")
+fit_LG_FB_LN  <- fitdist(as.numeric(na.omit(dat_ALL_LG_10sp_FB_asex_long2_c$log2FC_SA + 10)), "lnorm")
+fit_LG_FB_G   <- fitdist(as.numeric(na.omit(dat_ALL_LG_10sp_FB_asex_long2_c$log2FC_SA + 10)), "gamma")
+
+
+fit_WB_MB     <- fitdist(as.numeric(na.omit(dat_ALL_WB_10sp_MB_asex_long2_c$log2FC_SA + 10)), "norm")
+fit_WB_MB_LN  <- fitdist(as.numeric(na.omit(dat_ALL_WB_10sp_MB_asex_long2_c$log2FC_SA + 10)), "lnorm")
+fit_WB_MB_G   <- fitdist(as.numeric(na.omit(dat_ALL_WB_10sp_MB_asex_long2_c$log2FC_SA + 10)), "gamma")
+
+fit_RT_MB     <- fitdist(as.numeric(na.omit(dat_ALL_RT_10sp_MB_asex_long2_c$log2FC_SA + 10)), "norm")
+fit_RT_MB_LN  <- fitdist(as.numeric(na.omit(dat_ALL_RT_10sp_MB_asex_long2_c$log2FC_SA + 10)), "lnorm")
+fit_RT_MB_G   <- fitdist(as.numeric(na.omit(dat_ALL_RT_10sp_MB_asex_long2_c$log2FC_SA + 10)), "gamma")
+
+fit_LG_MB     <- fitdist(as.numeric(na.omit(dat_ALL_LG_10sp_MB_asex_long2_c$log2FC_SA + 10)), "norm")
+fit_LG_MB_LN  <- fitdist(as.numeric(na.omit(dat_ALL_LG_10sp_MB_asex_long2_c$log2FC_SA + 10)), "lnorm")
+fit_LG_MB_G   <- fitdist(as.numeric(na.omit(dat_ALL_LG_10sp_MB_asex_long2_c$log2FC_SA + 10)), "gamma")
+
+
+### normal fits the best
+denscomp(list(fit_WB_FB, fit_WB_FB_LN, fit_WB_FB_G), legendtext = c("norm", "log-norm", "gamma"))
+denscomp(list(fit_RT_FB, fit_RT_FB_LN, fit_RT_FB_G), legendtext = c("norm", "log-norm", "gamma"))
+denscomp(list(fit_LG_FB, fit_LG_FB_LN, fit_LG_FB_G), legendtext = c("norm", "log-norm", "gamma"))
+denscomp(list(fit_WB_MB, fit_WB_MB_LN, fit_WB_MB_G), legendtext = c("norm", "log-norm", "gamma"))
+denscomp(list(fit_RT_MB, fit_RT_MB_LN, fit_RT_MB_G), legendtext = c("norm", "log-norm", "gamma"))
+denscomp(list(fit_LG_MB, fit_LG_MB_LN, fit_LG_MB_G), legendtext = c("norm", "log-norm", "gamma"))
+
+qqcomp(list(fit_WB_FB, fit_WB_FB_LN, fit_WB_FB_G), legendtext = c("norm", "log-norm", "gamma"))
+qqcomp(list(fit_RT_FB, fit_RT_FB_LN, fit_RT_FB_G), legendtext = c("norm", "log-norm", "gamma"))
+qqcomp(list(fit_LG_FB, fit_LG_FB_LN, fit_LG_FB_G), legendtext = c("norm", "log-norm", "gamma"))
+qqcomp(list(fit_WB_MB, fit_WB_MB_LN, fit_WB_MB_G), legendtext = c("norm", "log-norm", "gamma"))
+qqcomp(list(fit_RT_MB, fit_RT_MB_LN, fit_RT_MB_G), legendtext = c("norm", "log-norm", "gamma"))
+qqcomp(list(fit_LG_MB, fit_LG_MB_LN, fit_LG_MB_G), legendtext = c("norm", "log-norm", "gamma"))
+
+
+WB_FB_m1 = lmer(log2FC_SA ~ N_sp_FB_wFC +  (1|genename), data = dat_ALL_WB_10sp_FB_asex_long2_c) 
+RT_FB_m1 = lmer(log2FC_SA ~ N_sp_FB_wFC +  (1|genename), data = dat_ALL_RT_10sp_FB_asex_long2_c) 
+LG_FB_m1 = lmer(log2FC_SA ~ N_sp_FB_wFC +  (1|genename), data = dat_ALL_LG_10sp_FB_asex_long2_c) 
+
+WB_MB_m1 = lmer(log2FC_SA ~ N_sp_MB_wFC +  (1|genename), data = dat_ALL_WB_10sp_MB_asex_long2_c) 
+RT_MB_m1 = lmer(log2FC_SA ~ N_sp_MB_wFC +  (1|genename), data = dat_ALL_RT_10sp_MB_asex_long2_c) 
+LG_MB_m1 = lmer(log2FC_SA ~ N_sp_MB_wFC +  (1|genename), data = dat_ALL_LG_10sp_MB_asex_long2_c) 
+
+#### FB all have +ve slope
+summary(WB_FB_m1) 
+summary(RT_FB_m1)
+summary(LG_FB_m1)
+
+#### MB all have -ve slope
+summary(WB_MB_m1)
+summary(RT_MB_m1)
+summary(LG_MB_m1)
+
+### get FDRs
+
+GLMM_FDRs <- p.adjust(c(drop1(WB_FB_m1,test="Chisq")$P[2],
+drop1(RT_FB_m1,test="Chisq")$P[2],
+drop1(LG_FB_m1,test="Chisq")$P[2],
+drop1(WB_MB_m1,test="Chisq")$P[2],
+drop1(RT_MB_m1,test="Chisq")$P[2],
+drop1(LG_MB_m1,test="Chisq")$P[2]))
+
+max(GLMM_FDRs)
+
+##### some of the GLMMs have a singlar fit - this is because in some models there are very few shared genes making it very difficult to fit the random effect
+#### check I get the same result with glms
+
+WB_FB_m0 = lm(log2FC_SA ~ N_sp_FB_wFC, data = dat_ALL_WB_10sp_FB_asex_long2_c) 
+RT_FB_m0 = lm(log2FC_SA ~ N_sp_FB_wFC, data = dat_ALL_RT_10sp_FB_asex_long2_c) 
+LG_FB_m0 = lm(log2FC_SA ~ N_sp_FB_wFC, data = dat_ALL_LG_10sp_FB_asex_long2_c) 
+
+WB_MB_m0 = lm(log2FC_SA ~ N_sp_MB_wFC, data = dat_ALL_WB_10sp_MB_asex_long2_c) 
+RT_MB_m0 = lm(log2FC_SA ~ N_sp_MB_wFC, data = dat_ALL_RT_10sp_MB_asex_long2_c) 
+LG_MB_m0 = lm(log2FC_SA ~ N_sp_MB_wFC, data = dat_ALL_LG_10sp_MB_asex_long2_c) 
+
+#### FB all have +ve slope
+summary(WB_FB_m0) 
+summary(RT_FB_m0)
+summary(LG_FB_m0)
+
+#### MB all have -ve slope
+summary(WB_MB_m0)
+summary(RT_MB_m0)
+summary(LG_MB_m0)
+
+### get FDRs
+
+GLM_FDRs <- p.adjust(c(drop1(WB_FB_m0,test="Chisq")$P[2],
+drop1(RT_FB_m0,test="Chisq")$P[2],
+drop1(LG_FB_m0,test="Chisq")$P[2],
+drop1(WB_MB_m0,test="Chisq")$P[2],
+drop1(RT_MB_m0,test="Chisq")$P[2],
+drop1(LG_MB_m0,test="Chisq")$P[2]))
+
+max(GLM_FDRs)
+
+### output
+
+
+#### FB all have +ve slope
+str(summary(WB_FB_m1) )
+summary(RT_FB_m1)
+summary(LG_FB_m1)
+
+#### MB all have -ve slope
+summary(WB_MB_m1)
+summary(RT_MB_m1)
+summary(LG_MB_m1)
+
+
+GLMM_GLM_output <- as.data.frame(cbind(
+c("FB", "FB", "FB", "MB", "MB", "MB"),
+c("WB", "RT", "LG", "WB", "RT", "LG"),
+c(
+summary(WB_FB_m1)$coefficients[2],
+summary(RT_FB_m1)$coefficients[2],
+summary(LG_FB_m1)$coefficients[2],
+summary(WB_MB_m1)$coefficients[2],
+summary(RT_MB_m1)$coefficients[2],
+summary(LG_MB_m1)$coefficients[2]),
+
+GLM_FDRs,
+GLMM_FDRs
+))
+
+colnames(GLMM_GLM_output) <- c("sex-bias", "tissue-type", "gradient", "GLM_FDR", "GLMM_FDR")
+write.csv(GLMM_GLM_output, file="N_SB_GLMM_GLM_output.csv", row.names=F)
+
+
+#### perm anova (gives the ~same results as the glmm )
+
+## permutes all vals
+
+
+perm_all_glm_FB <- function(df){
+	
+	#df$tiss   <-   as.character(df$tiss)
+	
+	dd    <- as.data.frame(cbind(
+		sample(as.character(df$log2FC_SA)),
+		df$N_sp_FB_wFC
+		))
+	
+	colnames(dd) <- c("log2FC_SA", "N_sp_FB_wFC")
+	
+	dd$log2FC_SA     <- as.numeric(as.character(dd$log2FC_SA))
+	dd$N_sp_FB_wFC   <- as.numeric(as.character(dd$N_sp_FB_wFC))
+	
+	#print(str(dd))
+			
+	model_1 <- glm(dd$log2FC_SA ~ dd$N_sp_FB_wFC)
+	out <- drop1(model_1,~.,test="F") 
+	
+	F_N_SB = out$F[2]
+	P_N_SB = out$P[2]
+
+
+	#print(head(dd, n = 20))	
+	#print(out)	
+	out_vals <- c(F_N_SB, P_N_SB)
+	return(out_vals)
+		
+}
+
+
+perm_all_glm_MB <- function(df){
+	
+	#df$tiss   <-   as.character(df$tiss)
+	
+	dd    <- as.data.frame(cbind(
+		sample(as.character(df$log2FC_SA)),
+		df$N_sp_MB_wFC
+		))
+	
+	colnames(dd) <- c("log2FC_SA", "N_sp_MB_wFC")
+	
+	dd$log2FC_SA     <- as.numeric(as.character(dd$log2FC_SA))
+	dd$N_sp_MB_wFC   <- as.numeric(as.character(dd$N_sp_MB_wFC))
+	
+	#print(str(dd))
+			
+	model_1 <- glm(dd$log2FC_SA ~ dd$N_sp_MB_wFC)
+	out <- drop1(model_1,~.,test="F") 
+	
+	F_N_SB = out$F[2]
+	P_N_SB = out$P[2]
+
+
+	#print(head(dd, n = 20))	
+	#print(out)	
+	out_vals <- c(F_N_SB, P_N_SB)
+	return(out_vals)
+		
+}
+
+# perm_all_glm_FB(dat_ALL_WB_10sp_FB_asex_long2_c)
+# perm_all_glm_MB(dat_ALL_WB_10sp_MB_asex_long2_c)
+# perm_all_glm_MB(dat_ALL_RT_10sp_MB_asex_long2_c)
+# perm_all_glm_MB(dat_ALL_RT_10sp_FB_asex_long2_c)
+# perm_all_glm_MB(dat_ALL_LG_10sp_MB_asex_long2_c)
+# perm_all_glm_MB(dat_ALL_LG_10sp_FB_asex_long2_c)
+
+#### run perms
+
+all_perm_out_FB_WB <- data.frame()
+all_perm_out_FB_RT <- data.frame()
+all_perm_out_FB_LG <- data.frame()
+
+all_perm_out_MB_WB <- data.frame()
+all_perm_out_MB_RT <- data.frame()
+all_perm_out_MB_LG <- data.frame()
+
+N_perm = 10000
+
+for(i in seq(1:N_perm)){
+	
+	run_all_FB_WB <- perm_all_glm_FB(dat_ALL_WB_10sp_FB_asex_long2_c)
+	run_all_FB_RT <- perm_all_glm_FB(dat_ALL_RT_10sp_FB_asex_long2_c)
+	run_all_FB_LG <- perm_all_glm_FB(dat_ALL_LG_10sp_FB_asex_long2_c)	
+	run_all_MB_WB <- perm_all_glm_MB(dat_ALL_WB_10sp_MB_asex_long2_c)
+	run_all_MB_RT <- perm_all_glm_MB(dat_ALL_RT_10sp_MB_asex_long2_c)
+	run_all_MB_LG <- perm_all_glm_MB(dat_ALL_LG_10sp_MB_asex_long2_c)	
+
+	all_perm_out_FB_WB <- rbind(all_perm_out_FB_WB, run_all_FB_WB)	
+	all_perm_out_FB_RT <- rbind(all_perm_out_FB_RT, run_all_FB_RT)	
+	all_perm_out_FB_LG <- rbind(all_perm_out_FB_LG, run_all_FB_LG)	
+	all_perm_out_MB_WB <- rbind(all_perm_out_MB_WB, run_all_MB_WB)	
+	all_perm_out_MB_RT <- rbind(all_perm_out_MB_RT, run_all_MB_RT)	
+	all_perm_out_MB_LG <- rbind(all_perm_out_MB_LG, run_all_MB_LG)	
+
+}
+
+
+
+colnames(all_perm_out_FB_WB) <- c("F_N_SB","P_N_SB")
+colnames(all_perm_out_FB_RT) <- c("F_N_SB","P_N_SB")
+colnames(all_perm_out_FB_LG) <- c("F_N_SB","P_N_SB")
+colnames(all_perm_out_MB_WB) <- c("F_N_SB","P_N_SB")
+colnames(all_perm_out_MB_RT) <- c("F_N_SB","P_N_SB")
+colnames(all_perm_out_MB_LG) <- c("F_N_SB","P_N_SB")
+
+
+#### write perms out to csv
+
+write.csv(all_perm_out_FB_WB, file=paste("all_perm_out_FB_WB_nperm=", N_perm, ".csv", sep = ""), row.names=FALSE)
+write.csv(all_perm_out_FB_RT, file=paste("all_perm_out_FB_RT_nperm=", N_perm, ".csv", sep = ""), row.names=FALSE)
+write.csv(all_perm_out_FB_LG, file=paste("all_perm_out_FB_LG_nperm=", N_perm, ".csv", sep = ""), row.names=FALSE)
+write.csv(all_perm_out_MB_WB, file=paste("all_perm_out_MB_WB_nperm=", N_perm, ".csv", sep = ""), row.names=FALSE)
+write.csv(all_perm_out_MB_RT, file=paste("all_perm_out_MB_RT_nperm=", N_perm, ".csv", sep = ""), row.names=FALSE)
+write.csv(all_perm_out_MB_LG, file=paste("all_perm_out_MB_LG_nperm=", N_perm, ".csv", sep = ""), row.names=FALSE)
+
+
+
+### what is the chance of obs my values by chance?
+
+
+str(m1_MB_out)
+m1_MB_out
+
+m1_WB_FB_F <- m1_WB_FB_out$F[2] 
+m1_RT_FB_F <- m1_RT_FB_out$F[2] 
+m1_LG_FB_F <- m1_LG_FB_out$F[2] 
+m1_WB_MB_F <- m1_WB_MB_out$F[2] 
+m1_RT_MB_F <- m1_RT_MB_out$F[2] 
+m1_LG_MB_F <- m1_LG_MB_out$F[2] 
+
+
+get_P_val <- function(perm_vector, orig_TS){
+	v1 <- ifelse(perm_vector > orig_TS , perm_vector, NA)
+	v2 <- v1[!is.na(v1)]
+	N_over = length(v2)
+	P = N_over / length(perm_vector)
+	print(N_over)
+	return(P)	
+}
+
+### FDR correct p-values
+
+
+padj_df <- as.data.frame(cbind(
+c("WB_FB_adj_p",
+"RT_FB_adj_p",
+"LG_FB_adj_p",
+"WB_MB_adj_p",
+"RT_MB_adj_p",
+"LG_MB_adj_p"),
+p.adjust(c(
+get_P_val(all_perm_out_FB_WB$F_N_SB, m1_WB_FB_F),
+get_P_val(all_perm_out_FB_RT$F_N_SB, m1_WB_FB_F),
+get_P_val(all_perm_out_FB_LG$F_N_SB, m1_WB_FB_F),
+get_P_val(all_perm_out_MB_WB$F_N_SB, m1_WB_MB_F),
+get_P_val(all_perm_out_MB_RT$F_N_SB, m1_WB_MB_F),
+get_P_val(all_perm_out_MB_LG$F_N_SB, m1_WB_MB_F)))))
+
+# output
+colnames(padj_df) <- c("group", "FDR")
+write.csv(padj_df, file=paste("N_SB_perm_output_df_nperm=", N_perm, ".csv", sep = ""), row.names=F)
+
+
+
+
+######################################################################################################################################################################## 
 ####### output session info
 print (sessionInfo())
 writeLines(capture.output(sessionInfo()), "N_SB_genes_10sp.R_sessionInfo.txt")
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
