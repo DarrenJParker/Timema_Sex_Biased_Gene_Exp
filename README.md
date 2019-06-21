@@ -41,6 +41,9 @@ done
 * plot
     * Sex_bias_plotsetc.R
 
+* Test for a relationship between the shift in sex-biased gene expression in asexual females and sexual-asexual divergence time
+    * divergence_and_change_in_SB.R
+
 **_Analyses using orthologs between all sexual and asexual species_**
 
 * Get Sex-biased genes
