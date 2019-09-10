@@ -85,7 +85,7 @@ for sp in Tbi Tce Tcm Tpa Tps; do
 	
 	python3 sex_bias_asex_edgeR_tidier.py \
 		-i Output/DE_10sp_Virgin -s \
-		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_Virgin/"$sp"_"$tiss"_RBBH_disp_allsepar"
+		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_Virgin/"$sp"_"$tiss"_10sp_disp_allsepar"
 	done
 done
 ```
