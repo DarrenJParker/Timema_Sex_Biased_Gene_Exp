@@ -58,8 +58,8 @@ colnames(rawdata_10sp)
 length(colnames(rawdata_10sp))
 
 dir.create("Output")
-dir.create("Output/DE_Virgin")
-setwd("Output/DE_Virgin")
+dir.create("Output/DE_10sp_Virgin")
+setwd("Output/DE_10sp_Virgin")
 
 ####### see how samples cluster
 #### WB all females
