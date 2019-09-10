@@ -73,7 +73,7 @@ python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
 _Adding virgin females_
 
 * get SB genes, cluster virgin and mated samples
-    * sex_bias_edgeR_withVIfemales.R
+    * sex_bias_edgeR_10sp_withVIfemales.R
 
 
 * bring expression data together:
@@ -91,7 +91,7 @@ done
 ```
 
 * plot
-    * Sex_bias_plotsetc_withVIfemales.R
+    * Sex_bias_plotsetc_10sp_withVIfemales.R
 
 
 **_Analyses without filtering genes with low expression in asexual females_**
