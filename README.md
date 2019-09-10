@@ -79,12 +79,12 @@ _Adding virgin females_
 * bring expression data together:
 
 ```
-mkdir Output/DE_joined_Virgin	
+mkdir Output/DE_10sp_joined_Virgin	
 for sp in Tbi Tce Tcm Tpa Tps; do
 	for tiss in WB; do
 	
 	python3 sex_bias_asex_edgeR_tidier.py \
-		-i Output/DE_Virgin -s \
+		-i Output/DE_10sp_Virgin -s \
 		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_joined_Virgin/"$sp"_"$tiss"_RBBH_disp_allsepar"
 	done
 done
