@@ -44,6 +44,29 @@ done
 * Test for a relationship between the shift in sex-biased gene expression in asexual females and sexual-asexual divergence time
     * divergence_and_change_in_SB.R
 
+
+_Using virgin females to independently verify sex-biased genes in whole-body samples_
+
+* Use virgin female whole-body samples to call sex-biased genes
+	* Sex_bias_edgeR_withVIfemales.R
+
+	* bring expression data together:
+
+	```
+	mkdir Output/DE_joined_Virgin	
+	for sp in Tbi Tce Tcm Tpa Tps; do
+		for tiss in WB; do
+
+		python3 sex_bias_asex_edgeR_tidier.py \
+			-i Output/DE_Virgin -s \
+			"TTT_lrt_"$sp"_sex_bias_"$tiss"_Vi.csv" -a sex_asex -o "Output/DE_joined_Virgin/"$sp"_"$tiss"_RBBH_disp_allsepar_Vi" 
+		done
+	done
+	```
+
+
+
+
 **_Analyses using orthologs between all sexual and asexual species_**
 
 * Get Sex-biased genes
@@ -73,25 +96,23 @@ python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
 _Adding virgin females_
 
 * get SB genes, cluster virgin and mated samples
-    * sex_bias_edgeR_10sp_withVIfemales.R
+	* sex_bias_edgeR_10sp_withVIfemales.R
+	* bring expression data together:
 
+	```
+	mkdir Output/DE_10sp_joined_Virgin	
+	for sp in Tbi Tce Tcm Tpa Tps; do
+		for tiss in WB; do
 
-* bring expression data together:
-
-```
-mkdir Output/DE_10sp_joined_Virgin	
-for sp in Tbi Tce Tcm Tpa Tps; do
-	for tiss in WB; do
-	
-	python3 sex_bias_asex_edgeR_tidier.py \
-		-i Output/DE_10sp_Virgin -s \
-		"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_10sp_joined_Virgin/"$sp"_"$tiss"_10sp_disp_allsepar"
+		python3 sex_bias_asex_edgeR_tidier.py \
+			-i Output/DE_10sp_Virgin -s \
+			"TTT_lrt_"$sp"_sex_bias_"$tiss".csv" -a sex_asex -o "Output/DE_10sp_joined_Virgin/"$sp"_"$tiss"_10sp_disp_allsepar"
+		done
 	done
-done
-```
+	```
 
-* plot
-    * Sex_bias_plotsetc_10sp_withVIfemales.R
+	* plot
+	    * Sex_bias_plotsetc_10sp_withVIfemales.R
 
 
 **_Analyses without filtering genes with low expression in asexual females_**
