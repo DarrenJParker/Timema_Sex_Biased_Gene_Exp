@@ -45,28 +45,28 @@ print (sessionInfo())
 ################################################################################################################################################
 ##### read in data
 
-setwd("output/DE_joined_Virgin")
+setwd("output/DE_10sp_joined_Virgin")
 
-dat_Tbi_WB_RBBH_SB_asex = read.csv("Tbi_WB_RBBH_disp_allsepar_SB_asex.csv")
-dat_Tce_WB_RBBH_SB_asex = read.csv("Tce_WB_RBBH_disp_allsepar_SB_asex.csv")
-dat_Tcm_WB_RBBH_SB_asex = read.csv("Tcm_WB_RBBH_disp_allsepar_SB_asex.csv")
-dat_Tpa_WB_RBBH_SB_asex = read.csv("Tpa_WB_RBBH_disp_allsepar_SB_asex.csv")
-dat_Tps_WB_RBBH_SB_asex = read.csv("Tps_WB_RBBH_disp_allsepar_SB_asex.csv")
+dat_Tbi_WB_10sp_SB_asex = read.csv("Tbi_WB_10sp_disp_allsepar_SB_asex.csv")
+dat_Tce_WB_10sp_SB_asex = read.csv("Tce_WB_10sp_disp_allsepar_SB_asex.csv")
+dat_Tcm_WB_10sp_SB_asex = read.csv("Tcm_WB_10sp_disp_allsepar_SB_asex.csv")
+dat_Tpa_WB_10sp_SB_asex = read.csv("Tpa_WB_10sp_disp_allsepar_SB_asex.csv")
+dat_Tps_WB_10sp_SB_asex = read.csv("Tps_WB_10sp_disp_allsepar_SB_asex.csv")
 
 
 
-head(dat_Tbi_WB_RBBH_SB_asex, n = 20)
+head(dat_Tbi_WB_10sp_SB_asex, n = 20)
 
 #################################################################################################################################################
 ###### refine sex bias by FC (not log FC)
 	
 FC_cutoff = 2
 
-dat_Tbi_WB_RBBH_SB_asex$Tbi_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tbi_WB_RBBH_SB_asex$Tbi_WB_log2FC_SB * dat_Tbi_WB_RBBH_SB_asex$Tbi_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tbi_WB_RBBH_SB_asex$Tbi_WB_sexbias), "Unbiased")
-dat_Tce_WB_RBBH_SB_asex$Tce_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tce_WB_RBBH_SB_asex$Tce_WB_log2FC_SB * dat_Tce_WB_RBBH_SB_asex$Tce_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tce_WB_RBBH_SB_asex$Tce_WB_sexbias), "Unbiased")
-dat_Tcm_WB_RBBH_SB_asex$Tcm_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tcm_WB_RBBH_SB_asex$Tcm_WB_log2FC_SB * dat_Tcm_WB_RBBH_SB_asex$Tcm_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tcm_WB_RBBH_SB_asex$Tcm_WB_sexbias), "Unbiased")
-dat_Tpa_WB_RBBH_SB_asex$Tpa_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tpa_WB_RBBH_SB_asex$Tpa_WB_log2FC_SB * dat_Tpa_WB_RBBH_SB_asex$Tpa_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tpa_WB_RBBH_SB_asex$Tpa_WB_sexbias), "Unbiased")
-dat_Tps_WB_RBBH_SB_asex$Tps_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tps_WB_RBBH_SB_asex$Tps_WB_log2FC_SB * dat_Tps_WB_RBBH_SB_asex$Tps_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tps_WB_RBBH_SB_asex$Tps_WB_sexbias), "Unbiased")
+dat_Tbi_WB_10sp_SB_asex$Tbi_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tbi_WB_10sp_SB_asex$Tbi_WB_log2FC_SB * dat_Tbi_WB_10sp_SB_asex$Tbi_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tbi_WB_10sp_SB_asex$Tbi_WB_sexbias), "Unbiased")
+dat_Tce_WB_10sp_SB_asex$Tce_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tce_WB_10sp_SB_asex$Tce_WB_log2FC_SB * dat_Tce_WB_10sp_SB_asex$Tce_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tce_WB_10sp_SB_asex$Tce_WB_sexbias), "Unbiased")
+dat_Tcm_WB_10sp_SB_asex$Tcm_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tcm_WB_10sp_SB_asex$Tcm_WB_log2FC_SB * dat_Tcm_WB_10sp_SB_asex$Tcm_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tcm_WB_10sp_SB_asex$Tcm_WB_sexbias), "Unbiased")
+dat_Tpa_WB_10sp_SB_asex$Tpa_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tpa_WB_10sp_SB_asex$Tpa_WB_log2FC_SB * dat_Tpa_WB_10sp_SB_asex$Tpa_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tpa_WB_10sp_SB_asex$Tpa_WB_sexbias), "Unbiased")
+dat_Tps_WB_10sp_SB_asex$Tps_WB_sexbias2 <- ifelse(2^(sqrt(dat_Tps_WB_10sp_SB_asex$Tps_WB_log2FC_SB * dat_Tps_WB_10sp_SB_asex$Tps_WB_log2FC_SB)) > FC_cutoff , as.character(dat_Tps_WB_10sp_SB_asex$Tps_WB_sexbias), "Unbiased")
 
 
 
@@ -151,20 +151,20 @@ make_long_table = function(dat_Tbi,dat_Tce,dat_Tcm,dat_Tpa,dat_Tps,tiss){
 	return(df_t)	
 }
 
-dat_ALL_WB_RBBH_SB_asex_long <- make_long_table("dat_Tbi_WB_RBBH_SB_asex", "dat_Tce_WB_RBBH_SB_asex", "dat_Tcm_WB_RBBH_SB_asex", "dat_Tpa_WB_RBBH_SB_asex", "dat_Tps_WB_RBBH_SB_asex",  "WB")
+dat_ALL_WB_10sp_SB_asex_long <- make_long_table("dat_Tbi_WB_10sp_SB_asex", "dat_Tce_WB_10sp_SB_asex", "dat_Tcm_WB_10sp_SB_asex", "dat_Tpa_WB_10sp_SB_asex", "dat_Tps_WB_10sp_SB_asex",  "WB")
 
 
 ######### remove NAs
 
-dat_ALL_WB_RBBH_SB_asex_long_c <- na.omit(dat_ALL_WB_RBBH_SB_asex_long)
+dat_ALL_WB_10sp_SB_asex_long_c <- na.omit(dat_ALL_WB_10sp_SB_asex_long)
 
 ##### plot boxplots
 
-head(dat_ALL_WB_RBBH_SB_asex_long_c)
+head(dat_ALL_WB_10sp_SB_asex_long_c)
 
-dat_ALL_WB_RBBH_SB_asex_long_c$sexbias2_ord <- ordered(dat_ALL_WB_RBBH_SB_asex_long_c$sexbias2, levels = c("female_biased",  "Unbiased", "male_biased"))	
+dat_ALL_WB_10sp_SB_asex_long_c$sexbias2_ord <- ordered(dat_ALL_WB_10sp_SB_asex_long_c$sexbias2, levels = c("female_biased",  "Unbiased", "male_biased"))	
 
-WB_SA_box_s2 <- ggplot(dat_ALL_WB_RBBH_SB_asex_long_c, aes(sp_ord, log2FC_SA)) + 
+WB_SA_box_s2 <- ggplot(dat_ALL_WB_10sp_SB_asex_long_c, aes(sp_ord, log2FC_SA)) + 
 	theme_classic() +
 	geom_boxplot(aes(fill = factor(sexbias2_ord)),position=position_dodge(0.6), width = 0.5, outlier.size = 0, lwd = 0.5, fatten = 1, outlier.shape = NA) +
 	coord_cartesian(ylim=c(-3.5,3.5)) +
@@ -176,7 +176,7 @@ WB_SA_box_s2 <- ggplot(dat_ALL_WB_RBBH_SB_asex_long_c, aes(sp_ord, log2FC_SA)) +
 
 ## pdf
 
-pdf(paste("Sex_asex_RBBH_WB_FC_boxplot_s2_FDR005FC2_Vi.pdf",sep = ""), width = 6, height = 8)
+pdf(paste("Sex_asex_10sp_WB_FC_boxplot_s2_FDR005FC2_Vi.pdf",sep = ""), width = 6, height = 8)
 WB_SA_box_s2
 dev.off()
 getwd() ## wh
