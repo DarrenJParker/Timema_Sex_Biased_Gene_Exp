@@ -45,7 +45,7 @@ done
     * divergence_and_change_in_SB.R
 
 
-_Using virgin females to independently verify sex-biased genes in whole-body samples_
+_Using female virgin whole-body samples to independently verify sex-biased genes_
 
 * Use virgin female whole-body samples to call sex-biased genes
 	* Sex_bias_edgeR_withVIfemales.R
@@ -64,6 +64,8 @@ _Using virgin females to independently verify sex-biased genes in whole-body sam
 	done
 	```
 
+	* Plot it out
+		* Sex_bias_plotsetc_withSB_from_Vi_and_Md_females.R
 
 
 
