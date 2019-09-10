@@ -70,7 +70,7 @@ python3 sex_bias_asex_edgeR_tidier.py -i Output/DE_10sp/ -s \
     * Sex_bias_plotsetc_10sp_orths.R	
     * N_SB_genes_10sp.R
 
-*Analyses using virgin females*
+**_Analyses using virgin females_**
 
 * get SB genes, cluster virgin and mated samples
     * sex_bias_edgeR_withVIfemales.R
@@ -161,6 +161,9 @@ done
 * plot
     * Sex_bias_plotsetc_asexual_ref.R
 
+**_Analyses on Autosomes only_**
+
+* Sex_bias_plotsetc_withchrinfo.R
 
 ### GO term analyses
 
