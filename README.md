@@ -114,8 +114,8 @@ _Adding virgin females_
 	```
 
 	* plot
+	    * Sex_bias_edgeR_10sp_orths_virgin_mated_asexual_heatmap.R
 	    * Sex_bias_plotsetc_10sp_withVIfemales.R
-
 
 **_Analyses without filtering genes with low expression in asexual females_**
 
