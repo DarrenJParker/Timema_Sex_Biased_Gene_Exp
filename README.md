@@ -7,6 +7,8 @@ This is the repository for the collected scripts used in the study:
 
 Currently under review.
 
+The version of scripts used in the paper are archived at http://dx.doi.org/10.5281/zenodo.3451445
+
 # Components
 
 ## DATA
