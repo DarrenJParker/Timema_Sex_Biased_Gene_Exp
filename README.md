@@ -3,9 +3,7 @@
 
 This is the repository for the collected scripts used in the study:
 
->Parker, D. J., Bast, J., Jalvingh, K., Dumas, Z., Robinson-Rechavi, M., Schwander, T. (2019). Sex-biased gene expression is repeatedly masculinized in asexual females. bioRxiv: doi: https://doi.org/10.1101/553172
-
-Currently under review.
+>Parker, D. J., Bast, J., Jalvingh, K., Dumas, Z., Robinson-Rechavi, M., Schwander, T. (2019). Sex-biased gene expression is repeatedly masculinized in asexual females. Nature Communications. 10: 4638.
 
 The version of scripts used in the paper are archived at http://dx.doi.org/10.5281/zenodo.3451445
 
